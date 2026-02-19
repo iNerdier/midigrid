@@ -43,15 +43,17 @@ end
 -- Mod Menu Support
 -------------------------------------------------------------------------------
 
--- The available grid sizes
+-- Menu options
 
 local grid_sizes = { "64", "128", "256" }
+local rotation = {"0°", "90°", "180°", "270°"}
 
 -- The state of midigrid as controlled by this mod
 
 local state = {
   midigrid_active = true,  -- is midigrid active?
   grid_size = 2,           -- size of midigrid.  default 2 -> grid 128
+  rotation = 1,            -- is the grid rotated, 0, 90, 180, 270
   dirty = false            -- has the state been changed since last persisted?
 }
 
@@ -131,6 +133,9 @@ mod.menu.register(mod.this_name, m)
 -- Install the parameters to be edited in the mod menu.
 
 local function init_params()
+
+  -- Is the midi grid active?
+
   m.params:add_option("midigrid_active", "midigrid active",
                       {"on", "off"},
                       state.midigrid_active and 1 or 2)
@@ -143,6 +148,8 @@ local function init_params()
                           state.midigrid_active = active
                       end)
 
+  -- What size (64, 128, 256) is the midi grid?
+
   m.params:add_option("midigrid_size", "midigrid size",
                       grid_sizes,
                       state.grid_size)
@@ -153,6 +160,21 @@ local function init_params()
                           end
                           state.grid_size = v
                       end)
+
+  -- Should a second grid be rotated?
+
+  m.params:add{
+    type = "option",
+    id = "rotate_second_device",
+    name = "rotate second device",
+    options = rotation,
+    default = 1,
+    action = function(v)
+      state.rotate_second_device = v
+      state.dirty = true
+    end
+  }
+
   m.exit_hook = function(m)
     if state.dirty then
       log("saving midigrid configuration")

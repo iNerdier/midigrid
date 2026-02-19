@@ -14,7 +14,6 @@ local device={
   note_to_grid_lookup = {}, -- Intentionally left empty
   width=8,
   height=8,
-  rotate_second_device=true,
 
   vgrid={},
   midi_id = 1,
@@ -50,8 +49,9 @@ function device:_init(vgrid,device_number)
   
   --if (self.)
   
-  if (device_number == 2 and self.rotate_second_device) then
-    self:rotate_ccw()
+  if (device_number == 2) then
+    print(state.rotation)
+    self:rotate_grid(rotation)
   end
   
   -- Create reverse lookup tables for device
@@ -241,40 +241,107 @@ function device:_send_cc(cc,z)
   if midi.devices[self.midi_id] then midi.devices[self.midi_id]:send(midi_msg) end
 end
 
-function device:rotate_ccw()
-  -- Rotate the grid
+-- function device:rotate_ccw()
+--   -- Rotate the grid
+--   local new_grid_notes = {}
+--   local row_offset = #self.grid_notes+1
+--   for col = 1,#self.grid_notes[1] do
+--     new_grid_notes[row_offset-col] = {}
+--     for row = 1,#self.grid_notes do
+--       --print (row_offset-col,',',row,' -- ',row,',',col)
+--       new_grid_notes[row_offset-col][row] = self.grid_notes[row][col]
+--     end
+--   end
+--   self.grid_notes = new_grid_notes
+
+  
+--   --Rotate the Aux buttons
+--   --Unpack Quick&Dirty copy
+--   local new_aux_row = {table.unpack(self.aux.col)}
+--   local new_aux_col = {}
+  
+  
+--   --Flip the aux column, otherwise it will be upside down
+--   for i=#self.aux.row, 1, -1 do
+--     if self.aux.row[i] == nil then print("no aux row btn #",i) end
+--   	new_aux_col[#new_aux_col+1] = { self.aux.row[i][1], self.aux.row[i][2], self.aux.row[i][3] }
+--    end
+  
+--   --[[Copy the aux column, otherwise it will be upside down
+--   for i=1,#self.aux.col do
+--     if self.aux.col[i] == nil then print("no aux row btn #",i) end
+--   	new_aux_row[#new_aux_row+1] = { self.aux.col[i][1], self.aux.col[i][2], self.aux.col[i][3] }
+--   end
+--   ]]
+
+--   self.aux.row = new_aux_row
+--   self.aux.col = new_aux_col
+-- end
+
+function device:rotate_grid(direction)
+
+-- Grid Rotation
+
   local new_grid_notes = {}
-  local row_offset = #self.grid_notes+1
-  for col = 1,#self.grid_notes[1] do
-    new_grid_notes[row_offset-col] = {}
-    for row = 1,#self.grid_notes do
-      --print (row_offset-col,',',row,' -- ',row,',',col)
-      new_grid_notes[row_offset-col][row] = self.grid_notes[row][col]
+
+  local function col(t)
+    local i, h = 0, #t
+    return function ()
+      i = i + 1
+      local column = {}
+      for j = 1, h do
+        local val = t[j][i]
+        if not val then return end
+        column[j] = val
+      end
+      return i, column
     end
   end
-  self.grid_notes = new_grid_notes
-  
-  --Rotate the Aux buttons
-  --Unpack Quick&Dirty copy
-  local new_aux_row = {table.unpack(self.aux.col)}
-  local new_aux_col = {}
-  
-  
-  --Flip the aux column, otherwise it will be upside down
-  for i=#self.aux.row, 1, -1 do
-    if self.aux.row[i] == nil then print("no aux row btn #",i) end
-  	new_aux_col[#new_aux_col+1] = { self.aux.row[i][1], self.aux.row[i][2], self.aux.row[i][3] }
-   end
-  
-  --[[Copy the aux column, otherwise it will be upside down
-  for i=1,#self.aux.col do
-    if self.aux.col[i] == nil then print("no aux row btn #",i) end
-  	new_aux_row[#new_aux_row+1] = { self.aux.col[i][1], self.aux.col[i][2], self.aux.col[i][3] }
-  end
-  ]]
 
-  self.aux.row = new_aux_row
-  self.aux.col = new_aux_col
+  local function reverse(t)
+    local n = #t
+    for i = 1, math.floor(n / 2) do
+      local j = n - i + 1
+      t[i], t[j] = t[j], t[i]
+    end
+    return t
+  end
+
+  local function rotateClockwise(t)
+    local t2 = {}
+    for i, column in col(t) do
+      t2[i] = reverse(column)
+    end
+    return t2
+  end
+
+  local function rotateAntiClockwise(t)
+    local t2 = {}
+    for i, column in col(t) do
+      t2[i] = column
+    end
+    return reverse(t2)
+  end
+
+  -- Actual Rotation of the grid. Could be more elegant. Currently passed an index and rotated a multiple of 90 or -90. 
+
+  if (direction == 4) then
+    new_grid_notes = rotateAntiClockwise(self.grid_notes)
+  elseif (direction == 2) then
+    new_grid_notes = rotateClockwise(self.grid_notes)
+  elseif (direction == 3) then
+    new_grid_notes = rotateClockwise(self.grid_notes)
+    new_grid_notes = rotateClockwise(self.grid_notes)
+    return self.grid_notes
+  end
+
+  self.grid_notes = new_grid_notes  
+end
+
+-- todo
+
+function device rotate_aux(direction)
+
 end
 
 function device:create_rev_lookups()
