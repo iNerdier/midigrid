@@ -78,7 +78,7 @@ function Vgrid:attach_devices(compatible_devices)
     end
   
     -- Call device init
-    dev:_init(self,device_number)
+    dev:_init(self, device_number, device_count)
   end
 end
 

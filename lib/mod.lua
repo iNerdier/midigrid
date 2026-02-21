@@ -161,17 +161,32 @@ local function init_params()
                           state.grid_size = v
                       end)
 
-  -- Should a second grid be rotated?
+  -- Should a grid be rotated?
+
+  -- for i = device_count do
+  --   m.params:add{
+  --     type = "option",
+  --     id = "rotate_"..i,
+  --     name = "Rotate Device "..i,
+  --     options = rotation,
+  --     default = 1
+  --     action = function(v)
+  --      state.rotate_second..i = v
+  --      state.dirty = true
+  --      print(v)
+  -- end
+  -- }
 
   m.params:add{
     type = "option",
-    id = "rotate_second_device",
-    name = "rotate second device",
+    id = "rotate_1",
+    name = "Rotate Device 1",
     options = rotation,
     default = 1,
     action = function(v)
-      state.rotate_second_device = v
+      state.rotate_1 = v
       state.dirty = true
+      print(v)
     end
   }
 
@@ -204,6 +219,7 @@ mod.hook.register("system_post_startup", "midigrid startup", function()
   if not error then
     state.midigrid_active = t.midigrid_active
     state.grid_size = t.grid_size
+    state.rotate_1 = t.rotate_1
     state.dirty = false
   else
     log("Could not load midigrid configuration: " .. error)
