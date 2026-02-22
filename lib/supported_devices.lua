@@ -46,6 +46,9 @@ local supported_devices = {
     -- Synthstrom Deluge
     { midi_base_name = 'deluge 1', device_type='deluge' },
 
+    -- Midiplus SmartPad
+    { midi_base_name = 'smartpad', device_type='smartpad' },
+
   }
 }
 
