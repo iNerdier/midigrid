@@ -24,14 +24,15 @@ function Vgrid:init(layout)
   self.layout = layout or '128'
   print("vgrid init with layout: ".. self.layout)
   if self.layout == '64' then
-    self.locate_in_layout = function(self,x,y) 
-      if (x > self.width or y > self.height) then 
-        return nil end 
+     self.locate_in_layout = function(self,x,y)
+      if (x < 1 or y < 1) then return nil end
+      if (x > self.width or y > self.height) then return nil end
       return 1 end
     self.new_quad(1,8,8,0,0)
      
   elseif self.layout == '128' or '256' then
     self.locate_in_layout = function(self,x,y)
+      if (x < 1 or y < 1) then return nil end
       if (x > self.width or y > self.height) then return nil end
       if (y <= self.quads[1].height) then
         if (x <= self.quads[1].width) then return 1 else return 2 end

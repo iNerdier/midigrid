@@ -152,10 +152,13 @@ end
 
 -- Grid emulation functions
 
-
 -- Grid Rotation
 function midigrid:rotation(direction, matrix)
   return self:vgrid
+end
+
+function midigrid:intensity(i)
+   --TODO unimplemented
 end
 
 function midigrid:all(z)
