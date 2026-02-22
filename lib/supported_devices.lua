@@ -26,12 +26,13 @@ local supported_devices = {
     -- A second LP Mini MK3 displays these device names:
     --   launchpad mini mk3 1 2
     --   launchpad mini mk3 2 2
-    -- LP Mini MK3 needs to be put in Programmer mode manually for midigrid use.
     { midi_base_name= 'launchpad mk2',          device_type='launchpad_rgb'   },
-    { midi_base_name= 'launchpad mk2 2',          device_type='launchpad_rgb'   },
-    { midi_base_name= 'launchpad mini mk3 2',   device_type='launchpad_minimk3' },
-    { midi_base_name= 'launchpad mini mk3 2 2', device_type='launchpad_minimk3' },
-    { midi_base_name= 'launchpad pro mk3',      device_type='launchpad_rgb' },
+    { midi_base_name= 'launchpad mk2 2',        device_type='launchpad_rgb'   },
+    { midi_base_name= 'launchpad mini mk3 2',   device_type='launchpad_mini_mk3' },
+    { midi_base_name= 'launchpad mini mk3 2 2', device_type='launchpad_mini_mk3' },
+    -- Confusingly unlike the x and mini the pro answers to programmer messages on interface *1* not 2.
+    { midi_base_name= 'launchpad pro mk3 1',    device_type='launchpad_pro_mk3' },
+    { midi_base_name= 'launchpad pro mk3 1 1',  device_type='launchpad_pro_mk3' },
     { midi_base_name= 'launchpad x 2',          device_type='launchpad_x' },
     { midi_base_name= 'launchpad x 2 2',        device_type='launchpad_x' },
     { midi_base_name= 'launchpad open 2',       device_type='launchpad_x' },

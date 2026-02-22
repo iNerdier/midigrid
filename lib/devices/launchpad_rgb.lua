@@ -30,34 +30,12 @@ launchpad.brightness_map = {
   119
 }
 
-launchpad.aux = {}
-
 -- Format is { 'cc'/'note', cc or note number, current/default state (1-16) }
 --top to bottom
 
 --these are LP keys to the sides of our grid
 --not necessary for strict grid emulation but handy!
 --they are up to down, so 89 is the auxkey to row 1
-launchpad.aux.col = {
-  {'note', 89, 0},
-  {'note', 79, 0},
-  {'note', 69, 0},
-  {'note', 59, 0},
-  {'note', 49, 0},
-  {'note', 39, 0},
-  {'note', 29, 0},
-  {'note', 19, 0}
-}
---left to right, 91 is aux key to column 1
-launchpad.aux.row = {
-  {'cc', 104, 0},
-  {'cc', 105, 0},
-  {'cc', 106, 0},
-  {'cc', 107, 0},
-  {'cc', 108, 0},
-  {'cc', 109, 0},
-  {'cc', 110, 0},
-  {'cc', 111, 0}
-}
+
 
 return launchpad
