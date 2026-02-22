@@ -152,6 +152,10 @@ end
 
 -- Grid emulation functions
 
+function midigrid:intensity(i)
+   --TODO unimplemented
+end
+
 function midigrid:rotation(dir)
   --TODO Is there a sane way to implement this with multi device?
   --TODO impement for single 64 device
